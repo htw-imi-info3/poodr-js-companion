@@ -14,4 +14,3 @@ console.log(new Gear(52, 11).ratio());
 
 console.log(new Gear(30, 27).ratio());
 // => 1.1111111111111112
-

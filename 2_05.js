@@ -11,4 +11,3 @@ chainring = 30;
 cog = 27;
 ratio = chainring / cog;
 console.log(ratio);   // => 1.1111111111111112
-

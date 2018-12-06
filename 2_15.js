@@ -23,4 +23,3 @@ console.log(new Gear(52, 11, 24, 1.25).gearInches());
 
 console.log(new Gear(52, 11).ratio()); // this does work!
 // => 4.7272727272727275
-
