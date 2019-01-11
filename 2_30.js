@@ -19,8 +19,6 @@ class RevealingReferences {
 
   wheelify(data) {
     return data.map((cell) => {
-      // ADAPTATION: Using an object literal in place of a Ruby Struct
-      // now everyone can send rim/tire to the wheel object literal
       return {
         rim: cell[0],
         tire: cell[1],
@@ -56,4 +54,34 @@ class Gear {
   }
 }
 
+console.log(`1st Gear gear_inches = ${new Gear(54, 11, 622, 20).gear_inches()}`);
+
+// diameter method doesn't belong in Gear, notice it depends on rim and tire only
+class GearWithDiameter {
+  constructor(chainring, cog, rim, tire) {
+    this._chainring = chainring;
+    this._cog = cog;
+    this._rim = rim;
+    this._tire = tire;
+  }
+
+  get chainring() { return this._chainring; }
+  get cog() { return this._cog; }
+  get rim() { return this._rim; }
+  get tire() { return this._tire; }
+
+  ratio() {
+    return this.chainring / this.cog;
+  }
+
+  gear_inches() {
+    return this.ratio() * this.diameter();
+  }
+
+  diameter() {
+    return this.rim + (this.tire * 2);
+  }
+}
+
 console.log(`2nd Gear gear_inches = ${new Gear(54, 11, 622, 20).gear_inches()}`);
+
