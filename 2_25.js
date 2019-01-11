@@ -9,7 +9,6 @@ class ObscuringReferences {
 
   diameters() {
     // 0 is rim, 1 is tire
-    this.data.collect // TODO: equivalent is fold?
     return this.data.map((cell) => {
       return cell[0] + (cell[1] * 2);
     });
