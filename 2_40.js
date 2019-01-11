@@ -46,3 +46,14 @@ console.log(new Gear(52, 11, wheel).gear_inches());
 console.log(new Gear(52, 11).ratio());
 // => 4.7272727272727275
 
+/*
+ * EXTENSION: Note that calling `gear_inches` without supplying a wheel results
+ * in an error as gear_inches attempts to send the `diameter` message to a
+ * `null` value.
+ *
+ * A similar error would occur in Ruby, with an undefined method `diameter` on
+ * the `nil:NilClass`.
+ */
+console.log(new Gear(52, 11).gear_inches());
+// => TypeError: Cannot read property 'diameter' of null
+// ...
