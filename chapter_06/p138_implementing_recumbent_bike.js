@@ -4,6 +4,8 @@ class Bicycle {
     this._size = opts.size;
     this._chain = opts.chain || this.default_chain();
     this._tire_size = opts.tire_size || this.default_tire_size();
+
+    this.post_initialize(opts);
   }
 
   get size() { return this._size; }
@@ -11,33 +13,39 @@ class Bicycle {
   get tire_size() { return this._tire_size; }
 
   spares() {
-    return {
+    return Object.assign({}, {
       tire_size: this.tire_size,
       chain: this.chain,
-    };
-  }
-
-  default_chain() {
-    return '11-speed';
+    }, this.local_spares());
   }
 
   default_tire_size() {
     throw new Error('Not implemented');
   }
+
+  // subclasses may override
+  post_initialize(opts) {}
+
+  local_spares() {
+    return {};
+  }
+
+  default_chain() {
+    return '11-speed';
+  }
 }
 
 class RoadBike extends Bicycle {
-  constructor(opts = {}) {
-    super(opts);
+  post_initialize(opts) {
     this._tape_color = opts.tape_color;
   }
 
   get tape_color() { return this._tape_color; }
 
-  spares() {
-    return Object.assign({}, super.spares(), {
+  local_spares() {
+    return {
       tape_color: this.tape_color,
-    });
+    };
   }
 
   default_tire_size() {
@@ -46,8 +54,7 @@ class RoadBike extends Bicycle {
 }
 
 class MountainBike extends Bicycle {
-  constructor(opts = {}) {
-    super(opts);
+  post_initialize(opts) {
     this._front_shock = opts.front_shock;
     this._rear_shock = opts.rear_shock;
   }
@@ -55,10 +62,10 @@ class MountainBike extends Bicycle {
   get front_shock() { return this._front_shock; }
   get rear_shock() { return this._rear_shock; }
 
-  spares() {
-    return Object.assign({}, super.spares(), {
+  local_spares() {
+    return {
       front_shock: this.front_shock,
-    });
+    };
   }
 
   default_tire_size() {
@@ -73,6 +80,8 @@ const road_bike = new RoadBike({
 
 console.log(road_bike.tire_size); // => 23
 console.log(road_bike.chain); // => 11-speed
+console.log(road_bike.spares())
+// => { tire_size: '23', chain: '11-speed', tape_color: 'red' }
 
 const mountain_bike = new MountainBike({
   size: 'S',
@@ -82,26 +91,20 @@ const mountain_bike = new MountainBike({
 
 console.log(mountain_bike.tire_size); // => 2.1
 console.log(mountain_bike.chain); // => 11-speed
+console.log(mountain_bike.spares())
+// => { tire_size: '2.1', chain: '11-speed', front_shock: 'Manitou' }
 
 class RecumbentBike extends Bicycle {
-  constructor(opts = {}) {
-    /*
-     * ADAPTATION: JavaScript will not allow you to forget to send `super`, so
-     * the error shown here will not be about tire_size not getting initialized,
-     * as in the Ruby example.
-     *
-     * Instead this will result in a "ReferenceError: Must call super
-     * constructor..."
-     */
-    this._flag = opts.flag; // forgot to send `super`
+  post_initialize(opts) {
+    this._flag = opts.flag;
   }
 
   get flag() { return this._flag; }
 
-  spares() {
-    return Object.assign({}, super.spares(), {
+  local_spares() {
+    return {
       flag: this.flag,
-    });
+    };
   }
 
   default_chain() {
@@ -114,8 +117,10 @@ class RecumbentBike extends Bicycle {
 }
 
 const bent = new RecumbentBike({
+  size: 'M',
   flag: 'tall and orange',
 });
-// => ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
-//      at new RecumbentBike ...
+
 console.log(bent.spares());
+// => { tire_size: '28', chain: '10-speed', flag: 'tall and orange' }
+

@@ -1,6 +1,13 @@
-// ...
+//6_40.js
+
+// Example in Book that forgets calling the super constructor does not
+// work in javascript as
+
 class Bicycle {
   constructor(opts = {}) {
+    this.do_initialization(opts)
+  }
+  do_initialization(opts){
     this._size = opts.size;
     this._chain = opts.chain || this.default_chain();
     this._tire_size = opts.tire_size || this.default_tire_size();
@@ -27,8 +34,8 @@ class Bicycle {
 }
 
 class RoadBike extends Bicycle {
-  constructor(opts = {}) {
-    super(opts);
+  do_initialization(opts = {}) {
+    super.do_initialization(opts);
     this._tape_color = opts.tape_color;
   }
 
@@ -46,8 +53,8 @@ class RoadBike extends Bicycle {
 }
 
 class MountainBike extends Bicycle {
-  constructor(opts = {}) {
-    super(opts);
+  do_initialization(opts = {}) {
+    super.do_initialization(opts);
     this._front_shock = opts.front_shock;
     this._rear_shock = opts.rear_shock;
   }
@@ -84,7 +91,7 @@ console.log(mountain_bike.tire_size); // => 2.1
 console.log(mountain_bike.chain); // => 11-speed
 
 class RecumbentBike extends Bicycle {
-  constructor(opts = {}) {
+  do_initialization(opts = {}) {
     /*
      * ADAPTATION: JavaScript will not allow you to forget to send `super`, so
      * the error shown here will not be about tire_size not getting initialized,

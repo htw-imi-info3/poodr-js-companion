@@ -1,4 +1,3 @@
-// ...
 class Bicycle {
   constructor(opts = {}) {
     this._size = opts.size;

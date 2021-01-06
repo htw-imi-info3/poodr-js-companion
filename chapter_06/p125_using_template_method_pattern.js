@@ -1,4 +1,4 @@
-// ...
+// 6_30.js
 class Bicycle {
   constructor(opts = {}) {
     this._size = opts.size;
@@ -10,19 +10,8 @@ class Bicycle {
   get chain() { return this._chain; }
   get tire_size() { return this._tire_size; }
 
-  spares() {
-    return {
-      tire_size: this.tire_size,
-      chain: this.chain,
-    };
-  }
-
-  default_chain() {
+  default_chain() { // <- common default
     return '11-speed';
-  }
-
-  default_tire_size() {
-    throw new Error('Not implemented');
   }
 }
 
@@ -35,14 +24,17 @@ class RoadBike extends Bicycle {
   get tape_color() { return this._tape_color; }
 
   spares() {
-    return Object.assign({}, super.spares(), {
+    return {
+      chain: '11-speed',
+      tire_size: '23',
       tape_color: this.tape_color,
-    });
+    };
   }
 
-  default_tire_size() {
+  default_tire_size() { // <- subclass default
     return '23';
   }
+  // ...
 }
 
 class MountainBike extends Bicycle {
@@ -61,9 +53,10 @@ class MountainBike extends Bicycle {
     });
   }
 
-  default_tire_size() {
+  default_tire_size() { // <- subclass default
     return '2.1';
   }
+  // ...
 }
 
 const road_bike = new RoadBike({
@@ -81,41 +74,20 @@ const mountain_bike = new MountainBike({
 });
 
 console.log(mountain_bike.tire_size); // => 2.1
-console.log(mountain_bike.chain); // => 11-speed
+console.log(mountain_bike.chain) // 11-speed
+
+// Bicycle's constructor method sends 'default_tire_size'
+// but the class itself does not provide an implementation.
 
 class RecumbentBike extends Bicycle {
-  constructor(opts = {}) {
-    /*
-     * ADAPTATION: JavaScript will not allow you to forget to send `super`, so
-     * the error shown here will not be about tire_size not getting initialized,
-     * as in the Ruby example.
-     *
-     * Instead this will result in a "ReferenceError: Must call super
-     * constructor..."
-     */
-    this._flag = opts.flag; // forgot to send `super`
-  }
-
-  get flag() { return this._flag; }
-
-  spares() {
-    return Object.assign({}, super.spares(), {
-      flag: this.flag,
-    });
-  }
-
   default_chain() {
     return '10-speed';
-  }
-
-  default_tire_size() {
-    return '28';
   }
 }
 
 const bent = new RecumbentBike({
-  flag: 'tall and orange',
+  size: 'L',
 });
-// => ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+// => TypeError: this.default_tire_size is not a function
+//      at new Bicycle ...
 //      at new RecumbentBike ...
-console.log(bent.spares());
