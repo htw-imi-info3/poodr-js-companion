@@ -44,6 +44,7 @@ const mountain_bike = new MountainBike({
   size: 'S',
   front_shock: 'Manitou',
   rear_shock: 'Fox',
+  tire_size: 26
 });
 
 console.log(mountain_bike.size);

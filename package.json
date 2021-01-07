@@ -1,0 +1,22 @@
+{
+  "name": "poodr-js-companion",
+  "version": "1.0.0",
+  "description": "Examples of POODR in Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/htw-imi-info3/poodr-js-companion.git"
+  },
+  "author": "Barne Kleinen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/htw-imi-info3/poodr-js-companion/issues"
+  },
+  "homepage": "https://github.com/htw-imi-info3/poodr-js-companion#readme",
+  "dependencies": {
+    "jest": "^26.6.3"
+  }
+}

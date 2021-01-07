@@ -16,7 +16,7 @@ class Bicycle {
   }
   // ...
   default_tire_size() {
-    throw new Error(`Not implemented: ${this.constructor.name} should have implemented...`);
+    throw new Error(`Not implemented: ${this.constructor.name} should have implemented default_tire_size`);
   }
 }
 

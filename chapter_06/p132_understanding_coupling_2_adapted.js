@@ -93,12 +93,7 @@ console.log(mountain_bike.chain); // => 11-speed
 class RecumbentBike extends Bicycle {
   do_initialization(opts = {}) {
     /*
-     * ADAPTATION: JavaScript will not allow you to forget to send `super`, so
-     * the error shown here will not be about tire_size not getting initialized,
-     * as in the Ruby example.
-     *
-     * Instead this will result in a "ReferenceError: Must call super
-     * constructor..."
+
      */
     this._flag = opts.flag; // forgot to send `super`
   }
